@@ -44,8 +44,10 @@ class Site():
 
     def askAdmin(self, good):
         if len(self.server.admins) == 0:
-            return "Нет свободных администраторов"
+            print("Нет свободных администраторов")
+            return
         else:
+            print("Продавец спрашивает у администратора")
             return self.server.admins[random.randint(0, len(self.server.admins)-1)].addGood(good)
 
     def removeGood(self, good):
@@ -116,8 +118,8 @@ class Server():
                 if customer.takeMoney(summ):
                     if len(self.sellers):
                         seller = self.sellers[random.randint(0, len(self.sellers))]
-                        order = self.site.sellersPage(seller, i)
                         print("Оплата произведена успешно")
+                        order = self.site.sellersPage(seller, i)
                         return order
 
                     else: print("Ошибка, нет свободных продавцов")

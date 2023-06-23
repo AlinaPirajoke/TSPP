@@ -31,9 +31,9 @@ class Customer():
             if random.randint(0, 1):
                 continue
             elif random.randint(0, 1):
-                good = goods[random.randint(0, len(goods))]
+                good = goods[random.randint(0, len(goods)-1)]
                 site.addToCart(good, self)
-                print(f"Клиент {self.name} добавил в корзину {good.name}")
+                print(f"Клиент {self.name} добавил в корзину {good.id}")
                 if random.randint(0, 1):
                     site.buyGoods(self)
                     print(f"Клиент {self.name} совершил покупку")
@@ -45,6 +45,12 @@ class Customer():
         #order = post.getOrder()
         print(f"Клиент {self.name} получил заказ")
 
+    def takeMoney(self, sum):
+        if self.money >= sum:
+            self.money -= sum
+            return sum
+        else: return 0
+
 
 class Administrator(Customer):
 
@@ -52,6 +58,7 @@ class Administrator(Customer):
         super().__init__(money, card, name, address)
         self.salary = salary
         self.server = server
+        self.server.addAdmin(self)
 
     def doSomething(self):
         if random.randint(0, 1):
@@ -62,7 +69,7 @@ class Administrator(Customer):
             print(f"Администратор {self.name} изменил сайт")
 
     def addGood(self, good):
-        if random.randint(0,1):
+        if random.randint(0,2):
             print(f"Администратор {self.name} одобрил")
             self.server.addGood(good)
 
@@ -77,7 +84,6 @@ class Seller():
         self.site = server.showSite()
 
     def answerOnQuestion(self, question):
-        self.site.answerOnQuestion()
         print(f"Продавец {self.name} ответил на вопрос")
         return "Потому что"
 
@@ -93,7 +99,7 @@ class Seller():
                 self.site.askAdmin(good)
             else:
                 good = self.site.search()
-                good = good[random.randint(0, len(good))]
+                good = good[random.randint(0, len(good)-1)]
                 print(f"Продавец {self.name} хочет удалить товар")
                 self.site.removeGood(good)
 
